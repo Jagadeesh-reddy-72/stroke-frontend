@@ -1,7 +1,7 @@
 async function uploadImage() {
     const fileInput = document.getElementById("fileInput");
-    const resultDiv = document.getElementById("result");
     const previewDiv = document.getElementById("preview");
+    const resultDiv = document.getElementById("result");
 
     const file = fileInput.files[0];
 
@@ -10,31 +10,33 @@ async function uploadImage() {
         return;
     }
 
-    // Show image preview
+    // Show image + filename
     const reader = new FileReader();
     reader.onload = function (e) {
         previewDiv.innerHTML = `
-            <h3>Uploaded Image:</h3>
-            <img src="${e.target.result}" width="250" style="border-radius:10px; margin-top:10px;">
+            <div style="margin-top:20px;">
+                <h3>Uploaded File:</h3>
+                <p><strong>${file.name}</strong></p>
+                <img src="${e.target.result}" 
+                     style="max-width:300px; border-radius:10px; margin-top:10px;">
+            </div>
         `;
     };
     reader.readAsDataURL(file);
 
-    // Show loading message
     resultDiv.innerHTML = "<h3>Analyzing... ⏳</h3>";
 
     const formData = new FormData();
     formData.append("file", file);
 
     try {
-        const response = await fetch("https://jagadeesh72-stroke-predict.hf.space/predict", {
-            method: "POST",
-            body: formData
-        });
-
-        if (!response.ok) {
-            throw new Error("Server error");
-        }
+        const response = await fetch(
+            "https://jagadeesh72-stroke-predict.hf.space/predict",
+            {
+                method: "POST",
+                body: formData
+            }
+        );
 
         const data = await response.json();
 
@@ -45,11 +47,8 @@ async function uploadImage() {
                 <h4>Confidence: ${data.confidence}%</h4>
             </div>
         `;
-
     } catch (error) {
-        resultDiv.innerHTML = `
-            <h3 style="color:red;">Error connecting to backend.</h3>
-        `;
-        console.error("Error:", error);
+        resultDiv.innerHTML = "<h3 style='color:red;'>Error connecting to backend.</h3>";
+        console.error(error);
     }
 }
