@@ -1,0 +1,32 @@
+body {
+    font-family: Arial;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    text-align: center;
+    color: white;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+.upload-box {
+    margin: 20px;
+}
+
+button {
+    padding: 12px 25px;
+    background: #00c6ff;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0072ff;
+}
+
+#result {
+    margin-top: 20px;
+    font-size: 20px;
+}
